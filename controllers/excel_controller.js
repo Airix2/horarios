@@ -29,6 +29,7 @@ const util = require('util');
 exports.renderExcel = function (req, res, next) {
     res.render('excel/indexTest', {});
 }
+
 exports.showExcel = function (req, res, next) {
     var form = new formidable.IncomingForm();
     form.parse(req, async function (err, fields, files) {

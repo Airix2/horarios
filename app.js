@@ -39,20 +39,12 @@ if (app.get('env') === 'production') {
 
 app.use(session(sess))
 
-// middleware for sending user variable
-const UserMiddleware = (req, res, next) => {
-  res.locals.user = req.user.user
-  res.locals.msgs = req.session.msgs
-  req.session.msgs = []
-  next();
-}
-
 //Use routers
 //Se aplican todos los routers y se añade un middleware de ser necesario
 //El middleware authrole recibe los tipos de usuarios que pueden pasar atraves de el
 //User Middleware pone automaticamente la variable user para utilizarse en los renders
 app.use('/', indexRouter);
-app.use('/excel', Authorize.authenticateToken, Authorize.User, UserMiddleware, Authorize.authRole(['admin', 'accounting', 'supervisor']), excelRouter);
+app.use('/excel', excelRouter);
 
 
 app.listen(8080, function () {
