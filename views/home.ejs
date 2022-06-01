@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include('partials/head'); %>
+</head>
+
+<body class="container-fluid bg-secondary px-0">
+
+  <header>
+    <%- include('partials/header'); %>
+  </header>
+
+  <main class="text-center px-5">
+    <div class="row">
+      <div class="col-12" style="height: 100px;"></div>
+      <% if (typeof msgs != "undefined") {
+        msgs.forEach(function(msg) { %>
+            <div class="bar <%= msg.type %>"><%= msg.text %></div>
+        <% })
+      } %>
+      <div class="col-12 py-5">
+        <h1>Welcome to <b><u>InRecords</u></b></h1>
+      </div>
+      <div class="col-12 py-5">
+        <h2>Hello <b>
+            <%= user.firstname %>
+          </b></h2>
+      </div>
+    </div>
+  </main>
+
+</body>
+
+</html>

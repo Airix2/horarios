@@ -1,0 +1,32 @@
+{
+  "name": "inr",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon node ./bin/www"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.15.4",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "csv-parser": "^3.0.0",
+    "debug": "~2.6.9",
+    "dotenv": "^10.0.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-session": "^1.17.2",
+    "formidable": "^2.0.1",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "morgan": "~1.9.1",
+    "nodemon": "^2.0.15",
+    "paginate": "git+https://github.com/AGITJTeam/paginate.git",
+    "pg": "^8.7.1",
+    "sequelize": "^6.13.0",
+    "uuid": "^8.3.2",
+    "uuid-random": "^1.3.2",
+    "xlsx-populate": "^1.21.0"
+  }
+}
