@@ -82,10 +82,8 @@ async function getCSVInfo2(timetables, files, nameForm, req, res) {
                         hour = hour.slice(0,2)  //remove $
                         hour = parseValues(hour)
 
-                        if (day == 'Martes') {
-                            day = 'martes'
-                        } else if (day.includes('coles')) {
-                            day = 'miercoles'
+                        if (day.includes('coles')) {
+                            day = 'Miercoles'
                         }
                         let spaceIndex = room.indexOf(' ');
                         room = room.slice(spaceIndex)
