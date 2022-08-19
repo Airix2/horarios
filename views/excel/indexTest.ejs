@@ -118,9 +118,10 @@
                                             <td>-</td>
                                             <td><%= (hour.hour + 1) %></td>
                                             <% let dias = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes']
+                                            let diasM = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes']
                                             for (let i = 0; i < 5; i++) { %>
-                                                <td><%= hour[dias[i]]?.group %></td>
-                                                <td><%= hour[dias[i]]?.room %></td>
+                                                <td><%= hour[diasM[i]]?.group %></td>
+                                                <td><%= hour[diasM[i]]?.room %></td>
                                             <% } %>
                                         </tr>
                                     <% } %>
