@@ -325,7 +325,7 @@ const XlsxPopulate = require("xlsx-populate");
 
 function createExcels(timetables) {
     let original = "./public/excels/formatogrupo.xlsx";
-    timetables.timetable_student.forEach((horario) => {
+    timetables.timetable_student.forEach((horario, index) => {
         let excelname = "./public/excels/" + horario.students + ".xlsx";
         XlsxPopulate.fromFileAsync(original).then((workbook) => {
             // POPULATING UPPER 2 CELLS
@@ -360,6 +360,67 @@ function createExcels(timetables) {
                 sheet.cell("J" + (index + 24)).value(materia.teacher);
             });
             // Write to file.
+
+            sheet = workbook.sheet("Salones");
+            dias = [
+                { dia: "Lunes", cell: "D", row: 3 },
+                { dia: "Martes", cell: "F", row: 20 },
+                { dia: "Miercoles", cell: "H", row: 37 },
+                { dia: "Jueves", cell: "J", row: 54 },
+                { dia: "Viernes", cell: "L", row: 71 },
+            ];
+            let cells = [
+                "D",
+                "E",
+                "F",
+                "G",
+                "H",
+                "I",
+                "J",
+                "K",
+                "L",
+                "M",
+                "N",
+                "O",
+                "P",
+                "Q",
+                "R",
+                "S",
+                "T",
+                "U",
+                "V",
+                "W",
+                "X",
+                "Y",
+                "Z",
+                "AA",
+                "AB",
+                "AC",
+                "AD",
+                "AE",
+                "AF",
+                "AG",
+                "AH",
+                "AI",
+            ];
+            timetables.timetable_student.forEach((schedule, i) => {
+                schedule.hours.forEach((hour) => {
+                    if (hour.hour !== undefined) {
+                        dias.forEach((dia) => {
+                            if (hour[dia.dia].room !== undefined) {
+                                let putInCell =
+                                    cells[parseInt(hour[dia.dia].room) - 1];
+                                sheet
+                                    .cell(
+                                        `${putInCell}${dia.row + hour.hour - 7}`
+                                    )
+                                    .value(schedule.students);
+                            }
+                        });
+                    }
+                });
+            });
+
             return workbook.toFileAsync(excelname);
         });
     });
@@ -418,6 +479,5 @@ function createExcels(timetables) {
             // Write to file.
             return workbook.toFileAsync(excelname);
         });
-        // }
     });
 }
