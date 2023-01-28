@@ -51,7 +51,7 @@ exports.showExcel = function (req, res, next) {
 			res
 		);
 
-		//console.log(timetables.timetable_teacher);
+		// console.log(timetables.timetable_teacher);
 		// console.log(timetables);
 		createExcels(timetables);
 
@@ -191,37 +191,30 @@ async function getCSVInfo2(timetables, files, nameForm, req, res) {
 						}
 					}
 					if (nameForm == "datosDocentes") {
-						let name = data["nombre"];
-						let name_timetable = data["NOMBRE"];
-						let rfc = data["rfc"];
-						let curp = data["clave presupuestal"];
-						let category = data["categoria"];
-						let horas = data["horas"];
-						let clave = data["clave final"];
-						let egresado = data["egresado"];
-						let academia = data["academia"];
-						let estudios = data["estudios"];
-						let ingreso_sep = data["ingreso sep"];
-						let ingreso_dgeti = data["ingreso dgeti"];
+						let name_timetable = data["nombre_timetable"];
 
-						// console.log(data);
-						// console.log(timetables.timetable_teacher);
+						// console.log(data, data.nombre, data["nombre"]);
 						let found = timetables.timetable_teacher.findIndex(
 							(horario) => {
-								if (horario.teacher == name_timetable) {
+								if (
+									horario.teacher?.toUpperCase()?.trim() ===
+									name_timetable?.toUpperCase()?.trim()
+								) {
+									// console.log("found!!");
 									return horario;
 								}
 							}
 						);
-						//console.log(timetables.timetable_teacher[found]);
-						// console.log(found);
 						if (found !== -1) {
+							// console.log("this does happen");
 							timetables.timetable_teacher[found] = {
 								...timetables.timetable_teacher[found],
 								...data,
 							};
+						} else {
+							console.log("we didnt find it...");
+							console.log(name_timetable);
 						}
-						// console.log(timetables.timetable_teacher[found]);
 					}
 				})
 				.on("end", () => {
@@ -443,50 +436,50 @@ function createExcels(timetables) {
 		let excelname = "./public/excels/" + horario.teacher + ".xlsx";
 		XlsxPopulate.fromFileAsync(original).then((workbook) => {
 			// POPULATING UPPER 2 CELLS
-			let sheet = workbook.sheet("Sheet1");
-			sheet.cell("C10").value(horario.teacher);
-			sheet.cell("B25").value(horario.teacher);
+			let sheet = workbook.sheet("Hoja1");
+			sheet.cell("C8").value(horario.teacher);
+			sheet.cell("B16").value(horario.teacher);
 
-			sheet.cell("Q10").value(horario.rfc);
-			sheet.cell("C11").value(horario.estudios);
-			sheet.cell("J11").value(horario.egresado);
-			sheet.cell("C12").value(horario.academia);
-			sheet.cell("I12").value(horario.categoria);
-			sheet.cell("A17").value(horario.ingreso_sep);
-			sheet.cell("B17").value(horario.ingreso_dgeti);
-			sheet.cell("N16").value(horario.horas);
+			sheet.cell("L7").value(horario.rfc);
+			sheet.cell("C9").value(horario.estudios);
+			sheet.cell("L8").value(horario.egresado);
+			sheet.cell("I9").value(horario.academia);
+			sheet.cell("N9").value(horario.categoria);
+			sheet.cell("A12").value(horario.ingreso_sep);
+			sheet.cell("B12").value(horario.ingreso_dgeti);
+			sheet.cell("F12").value(horario.horas);
 
 			if (horario.clave_presupuestal) {
 				let claves = horario.clave_presupuestal.split(",");
 				claves.forEach((clave, i) => {
-					sheet.cell(`C${17 + i}`).value(clave);
+					sheet.cell(`C${12 + i}`).value(clave);
 				});
 			}
 
 			// POPULATING SCHEDULE
 			let dias = [
-				{ dia: "Monday", cell: "L", cell2: "M" },
-				{ dia: "Tuesday", cell: "N", cell2: "O" },
-				{ dia: "Wednesday", cell: "P", cell2: "Q" },
-				{ dia: "Thursday", cell: "R", cell2: "S" },
-				{ dia: "Friday", cell: "T", cell2: "U" },
+				{ dia: "Monday", cell: "G", cell2: "H" },
+				{ dia: "Tuesday", cell: "I", cell2: "J" },
+				{ dia: "Wednesday", cell: "K", cell2: "L" },
+				{ dia: "Thursday", cell: "M", cell2: "N" },
+				{ dia: "Friday", cell: "O", cell2: "P" },
 			];
 			horario.hours.forEach((hour) => {
 				for (let i = 0; i < 5; i++) {
 					sheet
-						.cell(dias[i].cell + (20 + hour.hour))
+						.cell(dias[i].cell + (11 + hour.hour))
 						.value(hour[dias[i].dia]?.group);
 					sheet
-						.cell(dias[i].cell2 + (20 + hour.hour))
+						.cell(dias[i].cell2 + (11 + hour.hour))
 						.value(hour[dias[i].dia]?.room);
 				}
 			});
 
-			// POPULATING LOWER TABLE
+			// POPULATING LEFT TABLE
 			horario.materias.forEach((materia, index) => {
-				sheet.cell("A" + (index + 27)).value(materia.group);
-				sheet.cell("B" + (index + 27)).value(materia.subject);
-				sheet.cell("G" + (index + 27)).value(materia.hours);
+				sheet.cell("A" + (index + 18)).value(materia.group);
+				sheet.cell("B" + (index + 18)).value(materia.subject);
+				sheet.cell("E" + (index + 18)).value(materia.hours);
 			});
 			// Write to file.
 			return workbook.toFileAsync(excelname);
