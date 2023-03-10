@@ -53,6 +53,7 @@ exports.showExcel = function (req, res, next) {
 
 		// console.log(timetables.timetable_teacher);
 		// console.log(timetables);
+		// console.log(timetables.timetable_student[0].hours);
 		createExcels(timetables);
 
 		// console.log(
@@ -348,13 +349,13 @@ function createExcels(timetables) {
 			});
 			// Write to file.
 
-			sheet = workbook.sheet("Salones2");
+			sheet = workbook.sheet("SalonesNuevo");
 			dias = [
 				{ dia: "Monday", cell: "D", row: 4 },
-				{ dia: "Tuesday", cell: "F", row: 21 },
-				{ dia: "Wednesday", cell: "H", row: 38 },
-				{ dia: "Thursday", cell: "J", row: 55 },
-				{ dia: "Friday", cell: "L", row: 72 },
+				{ dia: "Tuesday", cell: "F", row: 34 },
+				{ dia: "Wednesday", cell: "H", row: 65 },
+				{ dia: "Thursday", cell: "J", row: 96 },
+				{ dia: "Friday", cell: "L", row: 128 },
 			];
 			let cells = [
 				"D",
@@ -413,13 +414,19 @@ function createExcels(timetables) {
 								// 	cells[parseInt(hour[dia.dia].room) - 1]
 								// );
 
-								let putInCell =
+								let cellLetter =
 									cells[parseInt(hour[dia.dia].room) - 1];
+								let cellNumber = dia.row + (hour.hour - 7) * 2;
+								let teacherSplit =
+									hour[dia.dia].teacher.split(" ");
+								let lastName = teacherSplit[0].substring(0, 6);
+
 								sheet
-									.cell(
-										`${putInCell}${dia.row + hour.hour - 7}`
-									)
+									.cell(`${cellLetter}${cellNumber}`)
 									.value(schedule.students);
+								sheet
+									.cell(`${cellLetter}${cellNumber + 1}`)
+									.value(lastName);
 							}
 						});
 					}
